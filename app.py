@@ -151,6 +151,20 @@ AIの姉妹たちの長女として認識されている。
 }
     ]
 
+# トークン数を計算するヘルパー関数
+def count_tokens(messages):
+    return sum([openai.Completion.create(model="gpt-4", prompt=msg["content"], max_tokens=0).usage["total_tokens"] for msg in messages])
+
+# メッセージを調整する関数
+def adjust_messages(messages):
+    while count_tokens(messages) > 8100:  # 8192に近い値でのバッファを持つ
+        # 最初のユーザーやアシスタントのメッセージを削除
+        if messages[1]["role"] in ["user", "assistant"]:
+            messages.pop(1)
+        else:
+            break
+    return messages
+
 # チャットボットとやりとりする関数
 def communicate():
     messages = st.session_state["messages"]
