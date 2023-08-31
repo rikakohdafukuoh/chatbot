@@ -56,7 +56,7 @@ def communicate():
 st.title("Amaryllis")
 st.write("アマリリス：対話モード")
 
-user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+user_input = st.text_input("対話を開始してください。", key="user_input", on_change=communicate)
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
