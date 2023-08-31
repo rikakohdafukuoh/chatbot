@@ -30,8 +30,8 @@ def communicate():
 
 
 # ユーザーインターフェイスの構築
-st.title("My AI Assistant")
-st.write("ChatGPT APIを使ったチャットボットです。")
+st.title("Amaryllis")
+st.write("アマリリス：対話モード")
 
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
@@ -41,6 +41,6 @@ if st.session_state["messages"]:
     for message in reversed(messages[1:]):  # 直近のメッセージを上に
         speaker = "🙂"
         if message["role"]=="assistant":
-            speaker="🤖"
+            speaker=""
 
         st.write(speaker + ": " + message["content"])
