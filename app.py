@@ -42,7 +42,7 @@ def communicate():
     messages.append(user_message)
 
     response = openai.ChatCompletion.create(
-        model="gpt-4-32k",
+        model="gpt-4",
         messages=messages
     )
 
