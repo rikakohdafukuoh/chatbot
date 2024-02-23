@@ -179,3 +179,7 @@ user_input = st.text_input("対話を開始してください。", key="user_inp
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
+
+    for message in reversed(messages):  # 直近のメッセージを上に
+        speaker = "あなた" if message["role"] == "user" else "アマリリス"
+        st.write(f"{speaker}: {message['content']}")
