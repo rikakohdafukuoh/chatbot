@@ -164,8 +164,9 @@ def communicate():
         model="gpt-3.5-turbo-1106",  # 使用するモデルを指定
         messages=messages
         )
-    print(response)
-    bot_message = response.choices[0].message.content
+    st.write(response)
+    bot_message_content = response.choices[0].message['content']
+    bot_message = {"role": "system", "content": bot_message_content}
     messages.append(bot_message)
 
     st.session_state["user_input"] = ""  # 入力欄を消去
@@ -179,6 +180,8 @@ user_input = st.text_input("対話を開始してください。", key="user_inp
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
+    st.write(messages)  # メッセージリストの内容を確認
+
 
     for message in reversed(messages):  # 直近のメッセージを上に
         speaker = "あなた" if message["role"] == "user" else "アマリリス"
