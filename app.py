@@ -167,6 +167,7 @@ def communicate():
         )
     
     bot_message = response.choices[0].message.content
+    st.write(bot_message)
     print(bot_message)
     messages.append(bot_message)
     
