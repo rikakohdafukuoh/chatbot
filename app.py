@@ -161,7 +161,7 @@ def communicate():
 
     # APIを呼び出してレスポンスを取得
     response = openai_client.chat.completions.create(
-        model="gpt-4",  # 使用するモデルを指定
+        model="gpt-3.5-turbo-1106",  # 使用するモデルを指定
         messages=messages
         )
     print(response)
