@@ -176,7 +176,7 @@ def communicate():
 
     # APIを呼び出してレスポンスを取得
     try:
-        response = client.completions.create(engine="gpt-4",
+        response = client.completions.create(model="gpt-4",
         prompt=prompt_text,
         max_tokens=150,  # 応答の最大トークン数
         temperature=0.7,  # 生成のランダム性を制御
@@ -185,6 +185,7 @@ def communicate():
     except Exception as e:
         st.error(f"OpenAI APIの呼び出し中にエラーが発生しました: {str(e)}")
         return
+    
 
     # 応答をメッセージリストに追加
     bot_message = response.choices[0].text.strip()
