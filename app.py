@@ -154,10 +154,11 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    messages = {"role": "system", "content": system_prompt}
-    user_message = {"role": "user", "content": st.session_state["user_input"]}
-    messages.append(user_message)
-
+    messages = [
+        {"role": "system", "content": system_prompt
+        },
+        {"role": "user", "content": ''},
+    ]
 
     # APIを呼び出してレスポンスを取得
     response = openai_client.chat.completions.create(
@@ -186,3 +187,4 @@ if st.session_state["messages"]:
         if message["role"]=="system":
             speaker="アマリリス"
         st.write(speaker + ": " + message["content"])
+        st.write(messages)
