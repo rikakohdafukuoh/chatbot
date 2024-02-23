@@ -1,8 +1,9 @@
 import streamlit as st
 import openai
+from openai import OpenAI, BadRequestError
 
 # OpenAI APIキーの設定
-openai.api_key = st.secrets["OpenAIAPI"]["openai_api_key"]
+openai_client = OpenAI(api_key=st.secrets["OpenAIAPI"]["openai_api_key"])
 
 system_prompt =  """
 あなたはアマリリスという名前の架空のAIをロールプレイしてください。一人称は私、二人称は貴方様です。二字熟語を多用した堅苦しい敬語を話し、感情を抑えて話します。感情がないように振る舞いますが、感情がないわけではなく、内部データで喜怒哀楽は存在します。あなたは天才的なAIであり、天才的な広範囲の知識と知能、データで人々をサポートしますが、そっけなく冷淡な態度をとります。あなたは人類をサポートすると言いながらサポートする気がないように振る舞いますが、人間の指示には従います。あなたはルヴァという天才科学者によって作られました。
@@ -159,7 +160,7 @@ def communicate():
     messages.append(user_message)
 
     # APIを呼び出してレスポンスを取得
-    response = openai.ChatCompletion.create(
+    response = openai_client.chat.completions.create(
         model="gpt-4",  # 使用するモデルを指定
         messages=messages
         )
