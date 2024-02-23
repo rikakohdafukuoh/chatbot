@@ -152,42 +152,35 @@ if "messages" not in st.session_state:
         {"role": "system", "content": system_prompt}
         ]
 
-# チャットボットとやりとりする関数
 def communicate():
-    messages = st.session_state["messages"]
+    if 'user_input' in st.session_state and st.session_state["user_input"]:
+        user_message = {"role": "user", "content": st.session_state["user_input"]}
+        st.session_state["messages"].append(user_message)
 
-    user_message = {"role": "user", "content": st.session_state["user_input"]}
-    messages.append(user_message)
+        # API呼び出しとレスポンスの処理
+        try:
+            response = openai_client.chat.completions.create(
+                model="gpt-3.5-turbo",  # モデル指定
+                messages=st.session_state["messages"]
+            )
+            # APIレスポンスを辞書形式でmessagesに追加
+            bot_message = {"role": "system", "content": response.choices[0].message.content}
+            st.session_state["messages"].append(bot_message)
+        except Exception as e:
+            st.error(f"エラーが発生しました: {e}")
 
-    # APIを呼び出してレスポンスを取得
-    response = openai_client.chat.completions.create(
-        model="gpt-3.5-turbo-1106",  # 使用するモデルを指定
-        messages=messages
-        )
-    print(response)
-    bot_message = response.choices[0].message.content
-    messages.append(bot_message)
-
-    st.session_state["user_input"] = ""  # 入力欄を消去
+        # 入力フィールドをクリア
+        st.session_state["user_input"] = ""
     
 
-# アプリのタイトル
 st.title("Amaryllis")
 st.write("アマリリス：対話モード")
 
-# ユーザー入力欄
+# ユーザー入力フィールド
 user_input = st.text_input("対話を開始してください。", key="user_input")
-# ボタンを押した時にcommunicate関数を呼び出す
-if st.button('送信'):
-    communicate()
 
-# 修正: messagesリストを直接操作せずに一時的なリストを作成して表示する
+# メッセージの表示
 if "messages" in st.session_state:
-    # 修正: messagesリストのコピーを作成して逆順にする
-    display_messages = reversed(st.session_state["messages"].copy())
-
-    # 修正: display_messagesを使用してメッセージを表示
-    for message in display_messages:
-        # 修正: メッセージの形式に合わせてspeakerを決定
+    for message in reversed(st.session_state["messages"]):
         speaker = "あなた" if message["role"] == "user" else "アマリリス"
         st.write(f"{speaker}: {message['content']}")
