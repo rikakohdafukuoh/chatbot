@@ -157,7 +157,7 @@ def communicate():
     messages = [
         {"role": "system", "content": system_prompt
         },
-        {"role": "user", "content": 'あなたはアマリリスになんでも聞くことができます。'},
+        {"role": "user", "content": ''},
     ]
 
     # APIを呼び出してレスポンスを取得
