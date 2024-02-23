@@ -165,22 +165,29 @@ def communicate():
         messages=messages
         )
     print(response)
-    bot_message= response.choices[0].message['content']  
+    bot_message = response.choices[0].message.content
     messages.append(bot_message)
 
     st.session_state["user_input"] = ""  # 入力欄を消去
     
 
-# ユーザーインターフェイスの構築
+# アプリのタイトル
 st.title("Amaryllis")
 st.write("アマリリス：対話モード")
 
-user_input = st.text_input("対話を開始してください。", key="user_input", on_change=communicate)
+# ユーザー入力欄
+user_input = st.text_input("対話を開始してください。", key="user_input")
+# ボタンを押した時にcommunicate関数を呼び出す
+if st.button('送信'):
+    communicate()
 
-if st.session_state["messages"]:
-    messages = st.session_state["messages"]
-    
+# 修正: messagesリストを直接操作せずに一時的なリストを作成して表示する
+if "messages" in st.session_state:
+    # 修正: messagesリストのコピーを作成して逆順にする
+    display_messages = reversed(st.session_state["messages"].copy())
 
-    for message in reversed(messages):  # 直近のメッセージを上に
+    # 修正: display_messagesを使用してメッセージを表示
+    for message in display_messages:
+        # 修正: メッセージの形式に合わせてspeakerを決定
         speaker = "あなた" if message["role"] == "user" else "アマリリス"
         st.write(f"{speaker}: {message['content']}")
