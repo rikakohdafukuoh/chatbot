@@ -187,4 +187,4 @@ if st.session_state["messages"]:
         if message["role"]=="system":
             speaker="アマリリス"
         st.write(speaker + ": " + message["content"])
-        st.write(messages)
+        st.write(bot_message)
