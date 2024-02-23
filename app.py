@@ -154,10 +154,11 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    messages = st.session_state["messages"]
-
-    user_message = {"role": "user", "content": st.session_state["user_input"]}
-    messages.append(user_message)
+    messages = [
+        {"role": "system", "content": system_prompt
+        },
+        {"role": "user", "content": 'あなたはアマリリスになんでも聞くことができます。'},
+    ]
 
     # APIを呼び出してレスポンスを取得
     response = openai_client.chat.completions.create(
@@ -165,10 +166,11 @@ def communicate():
         messages=messages
         )
     print(response)
-    bot_message = response["choices"][0]["message"]
+    bot_message = response.choices[0].message.content
     messages.append(bot_message)
 
     st.session_state["user_input"] = ""  # 入力欄を消去
+    
 
 # ユーザーインターフェイスの構築
 st.title("Amaryllis")
