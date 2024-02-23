@@ -165,9 +165,11 @@ def communicate():
         model="gpt-3.5-turbo-1106",  # 使用するモデルを指定
         messages=messages
         )
-    print(response)
+    
     bot_message = response.choices[0].message.content
+    print(bot_message)
     messages.append(bot_message)
+    
 
     st.session_state["user_input"] = ""  # 入力欄を消去
     
