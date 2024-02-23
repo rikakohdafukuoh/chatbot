@@ -181,5 +181,5 @@ if st.session_state["messages"]:
     messages = st.session_state["messages"]
 
     for message in reversed(messages):  # 直近のメッセージを上に
-        speaker = "あなた" if message["role"] == "user" else "アマリリス"
+        speaker = "あなた" if message["role"] == "user" else "system"
         st.write(f"{speaker}: {message['content']}")
