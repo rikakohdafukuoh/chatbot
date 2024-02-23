@@ -1,8 +1,9 @@
 import streamlit as st
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["OpenAIAPI"]["openai_api_key"])
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets["OpenAIAPI"]["openai_api_key"]
 
 # st.session_stateを使いメッセージのやりとりを保存、システムメッセージを含める
 if "messages" not in st.session_state:
@@ -176,13 +177,11 @@ def communicate():
 
     # APIを呼び出してレスポンスを取得
     try:
-        response = openai.Completion.create(
-            model="gpt-4",
-            prompt=prompt_text,
-            max_tokens=150,  # 応答の最大トークン数
-            temperature=0.7,  # 生成のランダム性を制御
-            stop=["\n", "あなた:", "アマリリス:"]  # 応答を適切に区切るためのストップシーケンス
-        )
+        response = client.completions.create(model="gpt-4",
+        prompt=prompt_text,
+        max_tokens=150,  # 応答の最大トークン数
+        temperature=0.7,  # 生成のランダム性を制御
+        stop=["\n", "あなた:", "アマリリス:"]  # 応答を適切に区切るためのストップシーケンス)
     except Exception as e:
         st.error(f"OpenAI APIの呼び出し中にエラーが発生しました: {str(e)}")
         return
