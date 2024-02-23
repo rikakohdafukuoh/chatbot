@@ -164,7 +164,7 @@ def communicate():
         model="gpt-4",  # 使用するモデルを指定
         messages=messages
         )
-    print(response.choices[0].message.content)
+    print(response)
     bot_message = response["choices"][0]["message"]
     messages.append(bot_message)
 
