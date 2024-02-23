@@ -154,21 +154,19 @@ if "messages" not in st.session_state:
 
 # チャットボットとやりとりする関数
 def communicate():
-    messages = [
-        {"role": "system", "content": system_prompt
-        },
-        {"role": "user", "content": ''},
-    ]
+    messages = st.session_state["messages"]
+
+    user_message = {"role": "user", "content": st.session_state["user_input"]}
+    messages.append(user_message)
 
     # APIを呼び出してレスポンスを取得
     response = openai_client.chat.completions.create(
         model="gpt-3.5-turbo-1106",  # 使用するモデルを指定
         messages=messages
         )
-    
+    print(response)
     bot_message = response.choices[0].message.content
     messages.append(bot_message)
-    
 
     st.session_state["user_input"] = ""  # 入力欄を消去
     
@@ -183,8 +181,5 @@ if st.session_state["messages"]:
     messages = st.session_state["messages"]
 
     for message in reversed(messages):  # 直近のメッセージを上に
-        speaker = "あなた" 
-        if message["role"]=="system":
-            speaker="アマリリス"
-        st.write(speaker + ": " + message["content"])
-        st.write(bot_message)
+        speaker = "あなた" if message["role"] == "user" else "アマリリス"
+        st.write(f"{speaker}: {message['content']}")
